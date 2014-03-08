@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		412C718118CB348F0031E84C /* DBUFetchLogTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412C718018CB348F0031E84C /* DBUFetchLogTableViewController.m */; };
+		412C718418CB44CB0031E84C /* DBULog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 412C718218CB44CB0031E84C /* DBULog.xcdatamodeld */; };
+		412C718C18CB6CFD0031E84C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 412C718B18CB6CFD0031E84C /* CoreData.framework */; };
+		412C718F18CB6F970031E84C /* FetchTime+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 412C718E18CB6F970031E84C /* FetchTime+Utility.m */; };
+		412C719518CB762B0031E84C /* FetchTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 412C719418CB762B0031E84C /* FetchTime.m */; };
 		417555C918C990B700AEB4BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417555C818C990B700AEB4BE /* Foundation.framework */; };
 		417555CB18C990B700AEB4BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417555CA18C990B700AEB4BE /* CoreGraphics.framework */; };
 		417555CD18C990B700AEB4BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417555CC18C990B700AEB4BE /* UIKit.framework */; };
@@ -35,6 +40,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		412C717F18CB348F0031E84C /* DBUFetchLogTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUFetchLogTableViewController.h; sourceTree = "<group>"; };
+		412C718018CB348F0031E84C /* DBUFetchLogTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUFetchLogTableViewController.m; sourceTree = "<group>"; };
+		412C718318CB44CB0031E84C /* DBULog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DBULog.xcdatamodel; sourceTree = "<group>"; };
+		412C718B18CB6CFD0031E84C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		412C718D18CB6F970031E84C /* FetchTime+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FetchTime+Utility.h"; sourceTree = "<group>"; };
+		412C718E18CB6F970031E84C /* FetchTime+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FetchTime+Utility.m"; sourceTree = "<group>"; };
+		412C719318CB762B0031E84C /* FetchTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchTime.h; sourceTree = "<group>"; };
+		412C719418CB762B0031E84C /* FetchTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchTime.m; sourceTree = "<group>"; };
 		417555C518C990B700AEB4BE /* DBUBackgroundFetch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DBUBackgroundFetch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		417555C818C990B700AEB4BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		417555CA18C990B700AEB4BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -62,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				412C718C18CB6CFD0031E84C /* CoreData.framework in Frameworks */,
 				417555CB18C990B700AEB4BE /* CoreGraphics.framework in Frameworks */,
 				417555CD18C990B700AEB4BE /* UIKit.framework in Frameworks */,
 				417555C918C990B700AEB4BE /* Foundation.framework in Frameworks */,
@@ -103,6 +117,7 @@
 		417555C718C990B700AEB4BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				412C718B18CB6CFD0031E84C /* CoreData.framework */,
 				417555C818C990B700AEB4BE /* Foundation.framework */,
 				417555CA18C990B700AEB4BE /* CoreGraphics.framework */,
 				417555CC18C990B700AEB4BE /* UIKit.framework */,
@@ -120,8 +135,15 @@
 				417555DD18C990B700AEB4BE /* Main_iPad.storyboard */,
 				417555E018C990B700AEB4BE /* DBUViewController.h */,
 				417555E118C990B700AEB4BE /* DBUViewController.m */,
+				412C717F18CB348F0031E84C /* DBUFetchLogTableViewController.h */,
+				412C718018CB348F0031E84C /* DBUFetchLogTableViewController.m */,
 				417555E318C990B700AEB4BE /* Images.xcassets */,
 				417555CF18C990B700AEB4BE /* Supporting Files */,
+				412C718D18CB6F970031E84C /* FetchTime+Utility.h */,
+				412C718E18CB6F970031E84C /* FetchTime+Utility.m */,
+				412C719318CB762B0031E84C /* FetchTime.h */,
+				412C719418CB762B0031E84C /* FetchTime.m */,
+				412C718218CB44CB0031E84C /* DBULog.xcdatamodeld */,
 			);
 			path = DBUBackgroundFetch;
 			sourceTree = "<group>";
@@ -262,7 +284,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				417555D918C990B700AEB4BE /* DBUAppDelegate.m in Sources */,
+				412C718F18CB6F970031E84C /* FetchTime+Utility.m in Sources */,
+				412C719518CB762B0031E84C /* FetchTime.m in Sources */,
 				417555D518C990B700AEB4BE /* main.m in Sources */,
+				412C718118CB348F0031E84C /* DBUFetchLogTableViewController.m in Sources */,
+				412C718418CB44CB0031E84C /* DBULog.xcdatamodeld in Sources */,
 				417555E218C990B700AEB4BE /* DBUViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,6 +520,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		412C718218CB44CB0031E84C /* DBULog.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				412C718318CB44CB0031E84C /* DBULog.xcdatamodel */,
+			);
+			currentVersion = 412C718318CB44CB0031E84C /* DBULog.xcdatamodel */;
+			path = DBULog.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 417555BD18C990B700AEB4BE /* Project object */;
 }

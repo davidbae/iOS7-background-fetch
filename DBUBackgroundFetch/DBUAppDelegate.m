@@ -32,6 +32,8 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    //백그라운드로 들어가면서 언제 들어 갔는지 Local Notification으로 남긴다.
     UILocalNotification *noti = [[UILocalNotification alloc] init];
     if(noti)
     {
@@ -77,11 +79,8 @@
                                              returningResponse:nil error:&error];
         //데이터가 로딩이 되었을 경우
         if (data != nil) {
-            //배지로 숫자를 올려줌. 백그라운드에서 실행되기 때문에
-            //배지로 뭔가 실행이 되엇다는 것을 알게 해줌.
-            [UIApplication sharedApplication].applicationIconBadgeNumber++;
             
-            //사용자에게 notification을 보냄.
+            //사용자에게 local notification을 보냄.
             UILocalNotification *noti = [[UILocalNotification alloc] init];
             if(noti)
             {
@@ -90,7 +89,6 @@
                                   (int)data.length, [NSDate date]];
                 [[UIApplication sharedApplication] presentLocalNotificationNow:noti];
             }
-            //중복체크를 위해서, 데이터를 저장함.
             
             //성공했음을 알림
             completionHandler(UIBackgroundFetchResultNewData);

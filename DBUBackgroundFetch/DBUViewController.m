@@ -7,9 +7,11 @@
 //
 
 #import "DBUViewController.h"
+#import "DBUAppDelegate.h"
 
 @interface DBUViewController ()
 
+@property (strong, nonatomic) IBOutlet UISwitch *fetchSwitch;
 @end
 
 @implementation DBUViewController
@@ -20,10 +22,23 @@
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    DBUAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    self.fetchSwitch.on = appDelegate.backgroundFetchOn;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)fetchSwitchChanged:(UISwitch *)sender
+{
+    DBUAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate setBackgroundFetchOn:sender.on];
+}
 @end

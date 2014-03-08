@@ -9,13 +9,16 @@
 #import "DBUAppDelegate.h"
 #import "FetchTime+Utility.h"
 
+#define DATAMODEL_NAME @"DBULog"
+#define SQLITE_NAME @"DBULog.sqlite"
+
 @implementation DBUAppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
-
+//@synthesize backgroundFetchOn = _backgroundFetchOn;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -23,7 +26,7 @@
     
     //Background Fetch 초기화 함.
     // 가장 짧은 주기로 계속해서 패치하도록 옵션 설정
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    //[[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
@@ -42,19 +45,35 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    FetchTime *fTime;
+    if (self.backgroundFetchOn) {
+        [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+        fTime = [FetchTime addFetchTime:@"Background Fetch Start"];
+        //백그라운드로 들어가면서 언제 들어 갔는지 Local Notification으로 남긴다.
+        UILocalNotification *noti = [[UILocalNotification alloc] init];
+        if(noti)
+        {
+            noti.repeatInterval = 0.0f;
+            noti.alertBody = [NSString stringWithFormat:@"%@:%@", fTime.title, fTime.time];
+            NSLog(@"%@", noti.alertBody);
+            [[UIApplication sharedApplication] presentLocalNotificationNow:noti];
+        }
+    }else{
+        //Fetch를 Off이면 패치를 하지 않도록 한다.
+        [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+        fTime = [FetchTime addFetchTime:@"Background Fetch Off"];
+        
+    }
     
     //백그라운드로 들어가면서 언제 들어 갔는지 Local Notification으로 남긴다.
     UILocalNotification *noti = [[UILocalNotification alloc] init];
     if(noti)
     {
         noti.repeatInterval = 0.0f;
-        noti.alertBody = [NSString stringWithFormat:@"Backgournd:%@", [NSDate date]];
+        noti.alertBody = [NSString stringWithFormat:@"%@:%@", fTime.title, fTime.time];
         NSLog(@"%@", noti.alertBody);
         [[UIApplication sharedApplication] presentLocalNotificationNow:noti];
     }
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    
-    [FetchTime addFetchTime:@"Background"];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -96,6 +115,18 @@
         }
     }
 }
+
+- (void) setBackgroundFetchOn:(BOOL)backgroundFetchOn
+{
+    [[NSUserDefaults standardUserDefaults] setObject:(backgroundFetchOn?@"YES":@"NO") forKey:@"backgroundFetchOn"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSLog(@"backgroundFetch : %@", (backgroundFetchOn)?@"ON":@"OFF");
+}
+- (BOOL) backgroundFetchOn
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"backgroundFetchOn"];
+}
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
@@ -121,7 +152,7 @@
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"DBULog" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:DATAMODEL_NAME withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -134,7 +165,7 @@
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"DBULog.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:SQLITE_NAME];
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

@@ -31,7 +31,6 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     NSArray *fetchTimes = [FetchTime allFetchTime];
-    
     return YES;
 }
 							

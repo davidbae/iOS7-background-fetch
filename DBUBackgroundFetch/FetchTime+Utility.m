@@ -52,8 +52,37 @@
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"FetchTime"];
     times = [managedContext executeFetchRequest:request error:&error];
-    for (FetchTime *fetchTime in times) {
-        NSLog(@"%@, %@", fetchTime.time, fetchTime.title);
+    
+    NSDateFormatter *_dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [_dateFormatter setLocale:[NSLocale currentLocale]];
+    NSDateFormatter *_intervalFormatter = [[NSDateFormatter alloc] init];
+    [_intervalFormatter setDateFormat:@"HH:mm:ss"];
+    [_intervalFormatter setLocale:[NSLocale currentLocale]];
+    
+    NSCalendar *_currentCalendar = [NSCalendar currentCalendar];
+    [_currentCalendar setLocale:[NSLocale currentLocale]];
+    NSCalendarUnit _calendarFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *intervalComponents;
+    for (int i = 0; i < [times count]; i++) {
+        FetchTime *fTime = [times objectAtIndex:i];
+        
+        NSString *timeString;
+        if( i == 0 || [fTime.title hasPrefix:@"Background"]){
+            timeString = fTime.title;
+        }else{
+            //Fetch Success인 경우, 이전 시간에서 얼마나 지난 후에, 패치가 이뤄졌는지 계산한다.
+            FetchTime *prevTime = [times objectAtIndex:i-1];
+            NSTimeInterval interval = [fTime.time timeIntervalSinceDate:prevTime.time];
+            NSDate *d1 = [NSDate date];
+            NSDate *d2 = [NSDate dateWithTimeInterval:interval sinceDate:d1];
+            intervalComponents = [_currentCalendar components:_calendarFlags fromDate:d1 toDate:d2 options:0];
+            NSDate *d3 = [_currentCalendar dateFromComponents:intervalComponents];
+            timeString = [_intervalFormatter stringFromDate:d3];
+        }
+        // NSDateComponents *components = [_currentCalendar components:_calendarFlags fromDate:fTime.time];
+        NSLog(@"%@ (%@)", [_dateFormatter stringFromDate:fTime.time], timeString);
+        
     }
     return times;
 }

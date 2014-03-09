@@ -7,9 +7,16 @@
 //
 
 #import "DBUFetchLogTableViewController.h"
+#import "FetchTime+Utility.h"
 
 @interface DBUFetchLogTableViewController ()
-
+{
+    NSDateFormatter *_dateFormatter;
+    NSDateFormatter *_intervalFormatter;
+    NSCalendar *_currentCalendar;
+    NSCalendarUnit _calendarFlags;
+}
+@property (nonatomic, strong) NSArray *fetchTimes;
 @end
 
 @implementation DBUFetchLogTableViewController
@@ -32,6 +39,30 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.fetchTimes = [FetchTime allFetchTime];
+    
+    
+    
+    if(_dateFormatter == nil)
+    {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        [_dateFormatter setLocale:[NSLocale currentLocale]];
+    }
+    if(_intervalFormatter == nil)
+    {
+        _intervalFormatter = [[NSDateFormatter alloc] init];
+        [_intervalFormatter setDateFormat:@"HH:mm:ss"];
+        [_intervalFormatter setLocale:[NSLocale currentLocale]];
+    }
+    if (_currentCalendar == nil)
+    {
+        _currentCalendar = [NSCalendar currentCalendar];
+        [_currentCalendar setLocale:[NSLocale currentLocale]];
+        //[_currentCalendar setLocale:[NSLocale localeWithLocaleIdentifier:@"ko_KR"]];
+        _calendarFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,24 +75,48 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.fetchTimes count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"fetchCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    NSString *timeString;
     // Configure the cell...
+    FetchTime *fTime = [self.fetchTimes objectAtIndex:indexPath.row];
+    if( indexPath.row == 0 || [fTime.title hasPrefix:@"Background"]){
+        timeString = @"";
+    }else{
+        //Fetch Success인 경우, 이전 시간에서 얼마나 지난 후에, 패치가 이뤄졌는지 계산한다.
+        FetchTime *prevTime = [self.fetchTimes objectAtIndex:indexPath.row-1];
+        NSTimeInterval interval = [fTime.time timeIntervalSinceDate:prevTime.time];
+
+        NSDate *d1 = [NSDate date];
+        NSDate *d2 = [NSDate dateWithTimeInterval:interval sinceDate:d1];
+        NSDateComponents *intervalComponents = [_currentCalendar components:_calendarFlags fromDate:d1 toDate:d2 options:0];
+        NSDate *d3 = [_currentCalendar dateFromComponents:intervalComponents];
+        timeString = [_intervalFormatter stringFromDate:d3];
+
+    }
+    //NSDateComponents *components = [_currentCalendar components:_calendarFlags fromDate:fTime.time];
+    
+    
+    
+    //cell.textLabel.text = [NSString stringWithFormat:@"%@", fTime.time ];
+    cell.textLabel.text = [_dateFormatter stringFromDate:fTime.time];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", fTime.title, timeString];
+    
+    
+    //이전과 비교해서, 지난 시간을 표시해 준다.)
     
     return cell;
 }
